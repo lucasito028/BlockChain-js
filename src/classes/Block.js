@@ -20,6 +20,6 @@ export default class Block {
         this.nonce++;
         this.hash = this.calculateHash(); 
       }
-      console.log(`Bloco ${this.index} minerado: ${this.hash}`);
+      alert(`Bloco ${this.index} minerado: ${this.hash}`);
     }
   }

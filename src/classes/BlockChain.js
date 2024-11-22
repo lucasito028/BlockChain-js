@@ -20,7 +20,7 @@ export default class BlockChain{
         }
         minedBlock.previousHash = this.getLatestBlock().hash; 
         this.chain.push(minedBlock); 
-        console.log(`Bloco ${minedBlock.index} adicionado com sucesso!`);
+        alert(`Bloco ${minedBlock.index} adicionado com sucesso!`);
       }
     
       isChainValid() {
