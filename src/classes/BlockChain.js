@@ -1,79 +1,47 @@
 import Block from './Block';
-import Transaction from './Translaction';
 
 export default class BlockChain{ 
     constructor() {
-        this.chain = [this.createGenesisBlock()];
-        this.difficulty = 4;
-        this.pendingTransactions = [];
-        this.miningReward = 100;
-    }
-
-    createGenesisBlock(){
-        return new Block("01/01/2024", "Genesis block", "0");
-    }
-
-    getLatestBlock() {
+        this.chain = [this.createGenesisBlock()]; // Inicializa com o bloco gênesis
+      }
+    
+      // Método para criar o bloco gênesis (primeiro bloco)
+      createGenesisBlock() {
+        return new Block(0, new Date().toISOString(), { amount: 50 }, "0");
+      }
+    
+      // Retorna o bloco mais recente da cadeia
+      getLatestBlock() {
         return this.chain[this.chain.length - 1];
-    }
-
-    /*
-    addBlock(newBlock) {
-        newBlock.previousHash = this.getLatestBlock().hash; 
-        newBlock.hash = newBlock.calculateHash();
-        this.chain.push(newBlock);
-    }
-    */
-    minePendingTransactions(miningRewardAddress) {
-        let block = new Block(Date.now(), this.pendingTransactions);
-        block.mineBlock(this.difficulty);
+      }
     
-        console.log('Block successfully mined!');
-        this.chain.push(block);
-    
-        this.pendingTransactions = [
-            new Transaction(null, miningRewardAddress, this.miningReward)
-        ];
-    }
-    
-    createTransaction(transaction) {
-        this.pendingTransactions.push(transaction);
-    }
-    
-    getBalanceOfAddress(address) {
-        let balance = 0;
-    
-        for (const block of this.chain) {
-            if (Array.isArray(block.transactions)) { // Verifica se é um array antes de iterar.
-                for (const transaction of block.transactions) {
-                    if (transaction.fromAddress === address) {
-                        balance -= transaction.amount;
-                    }
-    
-                    if (transaction.toAddress === address) {
-                        balance += transaction.amount;
-                    }
-                }
-            }
+      // Adiciona um novo bloco já minerado à cadeia
+      addBlock(minedBlock) {
+        if (minedBlock.hash.substring(0, 3) !== "000") { // Exemplo de dificuldade 3
+          console.error("Erro: O bloco não foi minerado corretamente.");
+          return;
         }
+        minedBlock.previousHash = this.getLatestBlock().hash; // Define o hash do bloco anterior
+        this.chain.push(minedBlock); // Adiciona o bloco à cadeia
+        console.log(`Bloco ${minedBlock.index} adicionado com sucesso!`);
+      }
     
-        return balance;
-    }
+      // Verifica a integridade da blockchain
+      isChainValid() {
+        for (let i = 1; i < this.chain.length; i++) {
+          const currentBlock = this.chain[i];
+          const previousBlock = this.chain[i - 1];
     
-    isChainValid(){
-
-        for(let i = 1; i < this.chain.length; i++){
-            const currentBlock = this.chain[i];
-            const previousBlock = this.chain[i - 1];
-            
-            if(currentBlock.hash !== currentBlock.calculateHash()) { 
-                return false;
-            }
-            if (currentBlock.previousHash !== previousBlock.hash) {
-                return false;
-            }
+          // Verifica se o hash atual foi alterado
+          if (currentBlock.hash !== currentBlock.calculateHash()) {
+            return false;
+          }
+    
+          // Verifica se o hash do bloco anterior bate
+          if (currentBlock.previousHash !== previousBlock.hash) {
+            return false;
+          }
         }
-
         return true;
-    }
+      }
 }
