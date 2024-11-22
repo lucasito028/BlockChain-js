@@ -37,7 +37,7 @@ function App() {
   const corruptBlockchain = () => {
     const blockIndex = parseInt(prompt("Digite o índice do bloco que você deseja corromper:"));
 
-    if (blockIndex <= 0 || blockIndex >= myBlockchain.chain.length) {
+    if (blockIndex < 0 || blockIndex >= myBlockchain.chain.length) {
       alert("Índice inválido! Você não pode corromper o bloco gênesis ou um índice inexistente.");
       return;
     }
