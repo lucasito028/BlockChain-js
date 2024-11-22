@@ -25,7 +25,7 @@ function App() {
       myBlockchain.addBlock(newBlock); 
     
       unstable_batchedUpdates(() => {
-        setIndexBlock(indexBlock + 2);
+        setIndexBlock(indexBlock + 1);
         setBlocks([...myBlockchain.chain]); 
         setAmount(100); 
       });
@@ -119,7 +119,7 @@ function App() {
       </div>
       <div>
         <h1>Minerar um Bloco</h1>
-        <button onClick={() => mineBlock(4)}>Minerar com Dificuldade 4</button>
+        <button onClick={() => mineBlock(3)}>Minerar com Dificuldade 4</button>
       </div>
 
       <div>

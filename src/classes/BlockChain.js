@@ -20,7 +20,7 @@ export default class BlockChain{
         }
         minedBlock.previousHash = this.getLatestBlock().hash; 
         this.chain.push(minedBlock); 
-        alert(`Bloco ${minedBlock.index} adicionado com sucesso!`);
+        //alert(`Bloco ${minedBlock.index} adicionado com sucesso!`);
       }
     
       isChainValid() {
@@ -28,13 +28,10 @@ export default class BlockChain{
           const currentBlock = this.chain[i];
           const previousBlock = this.chain[i - 1];
     
-          if (currentBlock.hash !== currentBlock.calculateHash()) {
+          if (currentBlock.hash !== currentBlock.calculateHash() || currentBlock.previousHash !== previousBlock.hash) {
             return false;
           }
     
-          if (currentBlock.previousHash !== previousBlock.hash) {
-            return false;
-          }
         }
         return true;
       }
